@@ -95,6 +95,19 @@ class Task extends \yii\db\ActiveRecord
         return false;
     }
 
+    public function getBall($attempt, $isCorrect) {
+        if ($this->isSimple() && $isCorrect ) {
+            return $this->max_ball;
+        }
+        if ($this->isMedium() && $isCorrect ) {
+            return $attempt == 0 ? $this->max_ball : $this->max_ball / 2;
+        }
+        if ($this->isHard() && $isCorrect && $attempt == 0) {
+            return $this->max_ball;
+        }
+        return 0;
+    }
+
     public function isInputType() {
         return $this->type === TaskType::INPUT;
     }

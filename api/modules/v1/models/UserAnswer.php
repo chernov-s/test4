@@ -29,22 +29,9 @@ class UserAnswer extends \yii\db\ActiveRecord
         return array_merge(
             parent::fields(),
             [
-                'user' => function() {
-                    return $this->user;
+                'is_correct' => function() {
+                    return $isCorrect = $this->task->isCorrectAnswer($this->value);
                 },
-                'score' => function() {
-                    $isCorrect = $this->task->isCorrectAnswer($this->value);
-                    if ($this->task->isSimple() && $isCorrect ) {
-                        return $this->task->max_ball;
-                    }
-                    if ($this->task->isMedium() && $isCorrect ) {
-                        return $this->task->max_ball;
-                    }
-                    if ($this->task->isHard() && $isCorrect ) {
-                        return $this->task->max_ball;
-                    }
-                    return 0;
-                }
             ]
         );
     }

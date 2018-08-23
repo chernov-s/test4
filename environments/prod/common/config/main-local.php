@@ -3,9 +3,9 @@ return [
     'components' => [
         'db' => [
             'class' => 'yii\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=ci88916_tracker',
-            'username' => 'ci88916_tracker',
-            'password' => 'n8CEj17b',
+            'dsn' => 'mysql:host=localhost;dbname=ci88916_test4',
+            'username' => 'ci88916_test4',
+            'password' => '68r1QanB',
             'charset' => 'utf8',
         ],
         'mailer' => [

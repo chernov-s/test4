@@ -49,6 +49,7 @@ class m180823_120236_create_user_answer_table extends Migration
         $optionList = [
             ['user_id' => 1,'task_id' => 1, 'value' => 'норм'],
             ['user_id' => 1,'task_id' => 2, 'value' => 'Марс'],
+            ['user_id' => 1,'task_id' => 2, 'value' => 'Земля'],
         ];
         foreach ($optionList as $item) {
             $this->insert(self::TABLE_NAME, $item);

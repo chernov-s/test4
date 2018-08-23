@@ -21,11 +21,6 @@ use yii\web\IdentityInterface;
  */
 class User extends ActiveRecord implements IdentityInterface
 {
-    public function extraFields()
-    {
-        return ['answers'];
-    }
-
     /**
      * @inheritdoc
      */
@@ -79,6 +74,11 @@ class User extends ActiveRecord implements IdentityInterface
         return 'user';
     }
 
+    public function extraFields()
+    {
+        return ['answers'];
+    }
+
     /**
      * @inheritdoc
      */
@@ -94,8 +94,32 @@ class User extends ActiveRecord implements IdentityInterface
         if (!empty($identity) && ($identity->getId() == $this->id))
             $fields['access_token'] = 'access_token';
 
-        $fields['answers'] = function () {
-            return $this->answers;
+        $fields['results'] = function () {
+            $attempts = [];
+            $answers = [];
+            foreach ($this->answers as $answer) {
+                $task = $answer->task;
+                if (array_key_exists($task->id, $attempts) === false) {
+                    $attempts[$task->id] = 0;
+                }
+                $isCorrect = $task->isCorrectAnswer($answer->value);
+                $attempt = $attempts[$task->id];
+                $ball = $task->getBall($attempt, $isCorrect);
+                $answers[$task->id] = [
+                    'task_id' => $task->id,
+                    'question' => $task->name,
+                    'answer' => $answer->value,
+                    'attempt' => $attempt,
+                    'is_correct' => $isCorrect,
+                    'ball' => $ball
+                ];
+                $attempts[$task->id]++;
+            }
+            $values = [];
+            foreach ($answers as $key => $value) {
+                $values[] = $value;
+            }
+            return $values;
         };
         return $fields;
     }
